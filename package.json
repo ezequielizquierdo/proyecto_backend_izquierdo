@@ -1,0 +1,26 @@
+{
+  "name": "proyecto_backend_izquierdo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ezequielizquierdo/proyecto_backend_izquierdo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ezequielizquierdo/proyecto_backend_izquierdo/issues"
+  },
+  "homepage": "https://github.com/ezequielizquierdo/proyecto_backend_izquierdo#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "express-routemap": "^1.6.0",
+    "morgan": "^1.10.0"
+  }
+}
