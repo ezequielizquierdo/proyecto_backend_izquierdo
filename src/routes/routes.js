@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const products = require("./product.route");
+
+const products = require("./product.routes");
+// const carts = require("./carts.route");
 
 router.get("/", function (req, res, next) {
   res.send(
@@ -11,6 +13,7 @@ router.get("/", function (req, res, next) {
   );
 });
 
-router.use("/api/products", products);
+router.use("/products", products);
+// router.use("/carts", carts);
 
 module.exports = router;

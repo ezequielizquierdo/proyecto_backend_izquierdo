@@ -1,0 +1,114 @@
+[
+  {
+    "id": 1,
+    "title": "Pelota de fútbol",
+    "description": "Pelota de fútbol profesional tamaño 5",
+    "code": "FB001",
+    "price": 29.99,
+    "status": true,
+    "stock": 100,
+    "category": "Fútbol",
+    "thumbnails": [
+      "/images/futbol/pelota1.png",
+      "/images/futbol/pelota2.png"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Raqueta de tenis",
+    "description": "Raqueta de tenis de alta calidad",
+    "code": "TN002",
+    "price": 89.99,
+    "status": true,
+    "stock": 50,
+    "category": "Tenis",
+    "thumbnails": [
+      "/images/tenis/raqueta1.png",
+      "/images/tenis/raqueta2.png"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Guantes de boxeo",
+    "description": "Guantes de boxeo de cuero sintético",
+    "code": "BX003",
+    "price": 49.99,
+    "status": true,
+    "stock": 75,
+    "category": "Boxeo",
+    "thumbnails": [
+      "/images/boxeo/guantes1.png",
+      "/images/boxeo/guantes2.png"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Bicicleta de montaña",
+    "description": "Bicicleta de montaña con suspensión delantera",
+    "code": "MT004",
+    "price": 299.99,
+    "status": true,
+    "stock": 20,
+    "category": "Ciclismo",
+    "thumbnails": [
+      "/images/ciclismo/bicicleta1.png",
+      "/images/ciclismo/bicicleta2.png"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Balón de baloncesto",
+    "description": "Balón de baloncesto oficial tamaño 7",
+    "code": "BB005",
+    "price": 34.99,
+    "status": true,
+    "stock": 60,
+    "category": "Baloncesto",
+    "thumbnails": [
+      "/images/baloncesto/balon1.png",
+      "/images/baloncesto/balon2.png"
+    ]
+  },
+  {
+    "title": "trineo",
+    "description": "trineo luminoso marca acme",
+    "code": "BX002222222",
+    "price": 49.99,
+    "status": true,
+    "stock": 7531,
+    "category": "Trineaos",
+    "thumbnails": [
+      "/images/boxeo/guantes1.png",
+      "/images/boxeo/guantes2.png"
+    ],
+    "id": 6
+  },
+  {
+    "title": "loquero",
+    "description": "loquero luminoso marca acme",
+    "code": "BX002222222",
+    "price": 49.99,
+    "status": true,
+    "stock": 7531,
+    "category": "Trineaos",
+    "thumbnails": [
+      "/images/boxeo/guantes1.png",
+      "/images/boxeo/guantes2.png"
+    ],
+    "id": 7
+  },
+  {
+    "title": "pomberito",
+    "description": "pombito luminoso marca acme",
+    "code": "BX002222222",
+    "price": 49.99,
+    "status": true,
+    "stock": 7531,
+    "category": "Pomberos",
+    "thumbnails": [
+      "/images/boxeo/guantes1.png",
+      "/images/boxeo/guantes2.png"
+    ],
+    "id": 8
+  }
+]
