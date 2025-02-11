@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 var logger = require("morgan");
-const routes = require("./src/routes/routes"); // Importamos el archivo de rutas
+const routes = require("./src/routes/routes");
 
 // MIDDELWARES
 app.use(express.json());
@@ -16,6 +16,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api", routes); // Usamos las rutas importadas en la raíz de la app
+app.use("/api", routes);
 
 module.exports = app;

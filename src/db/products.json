@@ -68,47 +68,5 @@
       "/images/baloncesto/balon1.png",
       "/images/baloncesto/balon2.png"
     ]
-  },
-  {
-    "title": "trineo",
-    "description": "trineo luminoso marca acme",
-    "code": "BX002222222",
-    "price": 49.99,
-    "status": true,
-    "stock": 7531,
-    "category": "Trineaos",
-    "thumbnails": [
-      "/images/boxeo/guantes1.png",
-      "/images/boxeo/guantes2.png"
-    ],
-    "id": 6
-  },
-  {
-    "title": "loquero",
-    "description": "loquero luminoso marca acme",
-    "code": "BX002222222",
-    "price": 49.99,
-    "status": true,
-    "stock": 7531,
-    "category": "Trineaos",
-    "thumbnails": [
-      "/images/boxeo/guantes1.png",
-      "/images/boxeo/guantes2.png"
-    ],
-    "id": 7
-  },
-  {
-    "title": "pomberito",
-    "description": "pombito luminoso marca acme",
-    "code": "BX002222222",
-    "price": 49.99,
-    "status": true,
-    "stock": 7531,
-    "category": "Pomberos",
-    "thumbnails": [
-      "/images/boxeo/guantes1.png",
-      "/images/boxeo/guantes2.png"
-    ],
-    "id": 8
   }
 ]

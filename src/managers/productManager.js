@@ -14,17 +14,20 @@ class ProductManager {
     }
   }
 
+  // getAll -> Obtiene todos los productos
   async getAll() {
     await this.initializeFile();
     const data = await fs.readFile(this.path, 'utf8');
     return JSON.parse(data);
   }
 
+  // getById -> Obtiene un producto por ID
   async getById(id) {
     const products = await this.getAll();
     return products.find(product => product.id === id);
   }
 
+  // save -> Guarda un producto
   async save(product) {
     const products = await this.getAll();
     const maxId = products.reduce((max, p) => (p.id > max ? p.id : max), 0);
@@ -34,6 +37,7 @@ class ProductManager {
     return product.id;
   }
 
+  // updateById -> Actualiza un producto por ID
   async updateById(id, updatedProduct) {
     const products = await this.getAll();
     const index = products.findIndex(product => product.id === id);
@@ -45,6 +49,7 @@ class ProductManager {
     throw new Error(`Product with ID ${id} not found`);
   }
 
+  // deleteById -> Elimina un producto por ID
   async deleteById(id) {
     const products = await this.getAll();
     const filteredProducts = products.filter(product => product.id !== id);

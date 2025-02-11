@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const products = require("./product.routes");
-// const carts = require("./carts.route");
+const carts = require("./cart.routes");
 
 router.get("/", function (req, res, next) {
   res.send(
@@ -14,6 +14,6 @@ router.get("/", function (req, res, next) {
 });
 
 router.use("/products", products);
-// router.use("/carts", carts);
+router.use("/carts", carts);
 
 module.exports = router;

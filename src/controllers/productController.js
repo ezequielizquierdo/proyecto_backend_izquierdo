@@ -6,8 +6,8 @@ const productManager = new ProductManager(path.join(__dirname, '../db/products.j
 module.exports = {
   getProducts: async (req, res) => {
     try {
-      const products = await productManager.getAll();
-      res.json(products);
+      const products = await productManager.getAll(); 
+      res.json(products); 
     } catch (error) {
       console.log("Error de lectura", error);
       res.status(500).json({ error: 'Error al obtener los productos' });
