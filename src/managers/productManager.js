@@ -18,12 +18,14 @@ class ProductManager {
   async getAll() {
     await this.initializeFile();
     const data = await fs.readFile(this.path, 'utf8');
+    // TODO ---> Agregar IF para verificar si data existe, sino devolver un [] vacio
     return JSON.parse(data);
   }
 
   // getById -> Obtiene un producto por ID
   async getById(id) {
     const products = await this.getAll();
+    // TODO ---> Agregar IF para verificar si products existe, sino devolver un [] vacio
     return products.find(product => product.id === id);
   }
 

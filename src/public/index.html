@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- DE DONDE TOMARÁ LOS ESTILOS -->
+    <style href="/static/css"></style> 
+  </head>
+  <body>
+    <h1>Subir Archivos</h1>
+    <form action="/uploads" method="post" enctype="multipart/form-data">
+      <label for="file">Seleccionar un archivo</label>
+      <input type="file" id="file" name="file" required />
+      <br />
+      <button type="submit">Subir archivo</button>
+    </form>
+  </body>
+</html>
