@@ -7,6 +7,13 @@ const multer = require("multer");
 const routes = require("./routes");
 const vistasRouter = require("./routes/vistas.routes");
 
+// CONFIGURACION DE SERVIDOR HTTP
+const http = require("http");
+const server = http.createServer(app);
+const io = require("socket.io")(server); // Importación sobre el servidor http de express
+
+
+
 // MIDDELWARES
 app.use(express.json()); // Middleware para parsear JSON en las peticiones HTTP . Para cuando nos pasan data por body, sino no lo parsea y no lo lee
 app.use(express.urlencoded({ extended: true })); // Middleware para parsear los datos de los formularios en las peticiones HTTP. Es una data que viene de un formulario
@@ -49,6 +56,23 @@ const upload = multer({ storage: storageConfig }); // Configuracion de multer pa
 app.use(express.static(path.join(__dirname, "public"))); // Middleware para servir archivos estaticos
 app.use("/static", express.static(path.join(__dirname, "public"))); // Prueba para MULTER hacia la carpeta public
 // app.use(express.static(path.join(__dirname, "views"))); // MULTER CON VIEWS
+const messages = [];
+
+// Configuración de SOCKET.IO
+io.on("connection", (socket) => {
+  socket.emit("messageList", messages); // Emitimos los mensajes al cliente que se conecta
+  console.log("Nuevo cliente se ha conectado");
+
+  socket.on("new-message", (message) => { // Escuchamos el evento new-message
+    messages.push(message);
+    io.sockets.emit("newMessage", // Emitimos el evento newMessage a todos los clientes conectados
+      socket.id, // Id del socket que envia el mensaje
+      message // Mensaje que envia el socket
+    );
+  });
+});
+
+
 
 // CONFIGURACION DE HANDLEBARS
 app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));

@@ -15,5 +15,14 @@
       <br />
       <button type="submit">Subir archivo</button>
     </form>
+    
+    <!-- PRUEBA DE SOCKET -->
+    <div>
+      <input type="text" id="messageInput" placeholder="Escriba un mensaje" required />
+      <button onclick="sendMessage()" id="boton" type="submit">Enviar</button>
+    </div>
+    <div id="messageList"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js"></script>
   </body>
 </html>
