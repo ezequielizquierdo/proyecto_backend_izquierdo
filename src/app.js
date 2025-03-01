@@ -4,15 +4,13 @@ const path = require("path");
 const app = express();
 const logger = require("morgan");
 const multer = require("multer");
-const routes = require("./routes");
-const vistasRouter = require("./routes/vistas.routes");
+const apiRoutes = require("./routes/product.routes");
+const vistasRoutes = require("./routes/vistas.routes");
 
 // CONFIGURACION DE SERVIDOR HTTP
 const http = require("http");
 const server = http.createServer(app);
 const io = require("socket.io")(server); // Importación sobre el servidor http de express
-
-
 
 // MIDDELWARES
 app.use(express.json()); // Middleware para parsear JSON en las peticiones HTTP . Para cuando nos pasan data por body, sino no lo parsea y no lo lee
@@ -22,10 +20,10 @@ app.use(logger("dev")); // Middleware para mostrar en consola las peticiones HTT
 // Los middlewares son funciones que se ejecutan antes de que lleguen a las rutas
 // Los middlewares se ejecutan en el orden en el que se declaran
 
-function miMiddleWare (req, res, next) {
-  console.log("Middleware in / : ", new Date());
-  next();
-}
+// function miMiddleWare (req, res, next) {
+//   console.log("Middleware in / : ", new Date());
+//   next();
+// }
 
 // app.use(miMiddleWare); // Aplicamos el middleware a todas las rutas
 
@@ -53,7 +51,7 @@ const storageConfig = multer.diskStorage({ // Configuracion de almacenamiento
 const upload = multer({ storage: storageConfig }); // Configuracion de multer para subir archivos
 
 // CONFIGURACION DE STATIC
-app.use(express.static(path.join(__dirname, "public"))); // Middleware para servir archivos estaticos
+// app.use(express.static(path.join(__dirname, "public"))); // Middleware para servir archivos estaticos
 app.use("/static", express.static(path.join(__dirname, "public"))); // Prueba para MULTER hacia la carpeta public
 // app.use(express.static(path.join(__dirname, "views"))); // MULTER CON VIEWS
 const messages = [];
@@ -72,20 +70,13 @@ io.on("connection", (socket) => {
   });
 });
 
-
-
 // CONFIGURACION DE HANDLEBARS
 app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));
-
-// CONFIGURACION DE VIEWS
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
 
-// RUTAS DE VISTAS 
-app.use("/vistas", vistasRouter);
-
 // RUTA RAIZ
-app.get("/", miMiddleWare, (req, res) => { // Cuando renderice la raiz del proyecto renderiza el index con el objeto testUser y ejecuta el middleware miMiddleWare
+app.get("/", (req, res) => { // Cuando renderice la raiz del proyecto renderiza el index con el objeto testUser y ejecuta el middleware miMiddleWare
   let testUser = { name: "Ezequiel", last_name: "Izquierdo" };
   res.render("index", testUser);
 });
@@ -101,7 +92,7 @@ app.post("/uploads", upload.single("file"), (req, res) => {
 });
 
 // RUTAS DE LA API
-app.use("/api", routes);
-app.use("/vistas", vistasRouter);
+app.use("/api", apiRoutes);
+app.use("/vistas", vistasRoutes);
 
 module.exports = app;

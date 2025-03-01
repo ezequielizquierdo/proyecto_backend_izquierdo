@@ -1,43 +1,53 @@
-const ProductManager = require('../managers/productManager');
-const path = require('path');
+const ProductManager = require("../managers/productManager");
+const path = require("path");
 
-const productManager = new ProductManager(path.join(__dirname, '../db/products.json'));
+const productManager = new ProductManager(
+  path.join(__dirname, "../db/products.json")
+);
 
 module.exports = {
   getProducts: async (req, res) => {
     try {
-      const products = await productManager.getAll(); 
+      const products = await productManager.getAll();
       // res.json(products); // Devuelve un JSON con los productos
-      console.log("products", products);
-      res.render("products", {products});
+      console.log("products en getProducts", products);
+      res.render("products", { products });
     } catch (error) {
       console.log("Error de lectura", error);
-      res.status(500).json({ error: 'Error al obtener los productos' });
+      res.status(500).json({ error: "Error al obtener los productos" });
     }
   },
 
   getProductById: async (req, res) => {
-    const idProduct = parseInt(req.params.id);
+    const idProduct = parseInt(req.params.id, 10);
+    console.log("idProduct", idProduct);
     try {
       const product = await productManager.getById(idProduct);
+      console.log("product en getProductById", product);
       if (product) {
-        res.json(product);
+        // res.json(product);
+        res.render("products", { product });
+        // res.render("products", { products });
       } else {
-        res.status(404).json({ error: 'Producto no encontrado' });
+        res.status(404).json({ error: "Producto no encontrado" });
       }
     } catch (error) {
       console.log("Error de lectura del id", error);
-      res.status(500).json({ error: 'Error al obtener el producto' });
+      res.status(500).json({ error: "Error al obtener el producto" });
     }
   },
 
   createProduct: async (req, res) => {
     try {
       const id = await productManager.save(req.body);
-      res.json({ id, ...req.body, message: `El producto se agregó correctamente con ID: ${id}` });
+      res.json({
+        id,
+        ...req.body,
+        message: `El producto se agregó correctamente con ID: ${id}`,
+      });
     } catch (error) {
       console.log("Error de escritura", error);
-      res.status(500).json({ error: 'Error al agregar el producto' });
+      res.status(500).json({ error: "Error al agregar el producto" });
     }
   },
 
@@ -47,10 +57,14 @@ module.exports = {
     let timestamp = Date.now();
     try {
       const updatedProduct = await productManager.updateById(id, product);
-      res.json({ ...updatedProduct, timestamp, message: `El producto ID: ${id} se actualizó con éxito` });
+      res.json({
+        ...updatedProduct,
+        timestamp,
+        message: `El producto ID: ${id} se actualizó con éxito`,
+      });
     } catch (error) {
       console.log("Error de actualización", error);
-      res.status(500).json({ error: 'Error al actualizar el producto' });
+      res.status(500).json({ error: "Error al actualizar el producto" });
     }
   },
 
@@ -61,7 +75,7 @@ module.exports = {
       res.json({ message: `El producto ID: ${id} se eliminó con éxito` });
     } catch (error) {
       console.log("Error de eliminación", error);
-      res.status(500).json({ error: 'Error al eliminar el producto' });
+      res.status(500).json({ error: "Error al eliminar el producto" });
     }
-  }
+  },
 };
