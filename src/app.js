@@ -6,6 +6,7 @@ const logger = require("morgan");
 const multer = require("multer");
 const apiRoutes = require("./routes/product.routes");
 const vistasRoutes = require("./routes/vistas.routes");
+const configureHandlebars = require("./config/handlebars");
 
 // CONFIGURACION DE SERVIDOR HTTP
 const http = require("http");
@@ -26,15 +27,19 @@ app.use(express.urlencoded({ extended: true })); // Middleware para parsear los 
 app.use(logger("dev")); // Middleware para mostrar en consola las peticiones HTTP que llegan al servidor
 
 // CONFIGURACION DE HANDLEBARS
-app.engine(
-  "handlebars",
-  handlebars.engine({
-    defaultLayout: "main",
-    partialsDir: path.join(__dirname, "views", "partials"),
-  })
-); // Configuracion de handlebars con partials para reutilizar codigo
-app.set("view engine", "handlebars"); // Configuracion de handlebars como motor de vistas
-app.set("views", path.join(__dirname, "views")); // Configuracion de la carpeta de vistas
+configureHandlebars(app);
+// app.engine(
+//   "handlebars",
+//   handlebars.engine({
+//     defaultLayout: "main",
+//     partialsDir: path.join(__dirname, "views", "partials"),
+//   })
+// ); // Configuracion de handlebars con partials para reutilizar codigo
+// app.set("view engine", "handlebars"); // Configuracion de handlebars como motor de vistas
+// app.set("views", path.join(__dirname, "views")); // Configuracion de la carpeta de vistas
+
+
+
 
 // CONFIGURACION DE STATIC
 app.use(express.static(path.join(__dirname, "public")));

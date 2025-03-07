@@ -77,17 +77,22 @@ btnMessage.addEventListener("click", (e) => { // Emite el mensaje al servidor
   e.preventDefault();
   const message = inputMessage.value;
   socket.emit("userMessage", { message, user: userName.innerHTML });
+  inputMessage.value = "";
+
 });
 
-//* Evento para escuchar mensajes nuevos del servidor y actualizar la lista de mensajes
+socket.on("serverUserMessage", (data) => {
+  chatMessage.innerHTML = "";
+  updateMessagges(data);
+});
 
-/*
-Los eventos de Socket.IO son asíncronos, lo que significa que no podemos detener el flujo 
-de la aplicación esperando una respuesta directa. 
-Para manejar esto, podemos:
+const typing = document.querySelector(".typing");
 
-1. Usar callbacks proporcionados por el cliente o el servidor.
-2. Emitir eventos personalizados y escuchar las respuestas por separado.
+inputMessage.addEventListener("keypress", () => {
+  socket.emit("typing", { user: userName.innerHTML });
+});
 
-Esto permite que el flujo de la aplicación continúe mientras se gestionan las respuestas.
-*/
+socket.on("typing", (data) => {
+  // console.log("::", data);
+  typing.textContent = `...${data.user} esta escribiendo`
+});
