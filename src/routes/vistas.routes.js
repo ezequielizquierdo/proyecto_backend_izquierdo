@@ -1,48 +1,51 @@
 const express = require("express");
 const router = express.Router();
+const fs = require("fs");
+const path = require("path");
 
-const users = [];
+const usersFilePath = path.join(__dirname, "../db/users.json");
+
+const getUsers = () => {
+  const data = fs.readFileSync(usersFilePath, "utf8");
+  return JSON.parse(data);
+};
+
+const saveUsers = (users) => {
+  fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+};
 
 router.get("/user", (req, res) => {
-  const { nombre, id } = req.query;
-  const context = {
-    nombre,
-    id,
-  };
-console.log("users", users);
-  let isValidate = id === "1234"
-  if (isValidate) {
-    return res.render("index", context); // Renderiza el handlebars index.hbs
+  const { nombre } = req.query;
+  const users = getUsers();
+  const user = users.find(u => u.username === nombre);
+  if (user) {
+    res.json(user);
   } else {
-    return res.render("not_found_user", context); // Renderiza el handlebars not_found_user.hbs
+    res.status(404).json({ error: "Usuario no encontrado" });
   }
 });
 
-// Hacer un post de user con un try catch. Incluyendo nombre, edad, email.
-router.post("/user", (req, res) => {
+router.post("/register", (req, res) => {
   try {
-    const { nombre, edad, email } = req.body;
-    if (!nombre || !edad || !email) {
-      return res.status(400).json({ error: "Faltan datos" });
+    const { username, firstName, lastName, age, email } = req.body;
+    const users = getUsers();
+    if (users.find(u => u.username === username)) {
+      return res.status(400).json({ error: "El nombre de usuario ya existe" });
     }
-    const user = {
-      nombre,
-      edad,
+    const newUser = {
+      id: users.length + 1,
+      username,
+      firstName,
+      lastName,
+      age,
       email,
     };
-    users.push(user)
-    return res.status(200).send("Usuario creado correctamente");
+    users.push(newUser);
+    saveUsers(users);
+    res.status(201).json({ message: "Usuario registrado correctamente" });
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el usuario" });
+    res.status(500).json({ error: "Error al registrar el usuario" });
   }
-  return res.render("index", context);
 });
-
-router.get("/users", (req, res) => {
-  res.json(users);
-});
-
-
-
 
 module.exports = router;

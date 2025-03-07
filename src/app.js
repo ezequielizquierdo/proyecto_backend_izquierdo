@@ -12,22 +12,6 @@ const http = require("http");
 const server = http.createServer(app);
 const io = require("socket.io")(server); // Importación sobre el servidor http de express
 
-// MIDDELWARES
-app.use(express.json()); // Middleware para parsear JSON en las peticiones HTTP . Para cuando nos pasan data por body, sino no lo parsea y no lo lee
-app.use(express.urlencoded({ extended: true })); // Middleware para parsear los datos de los formularios en las peticiones HTTP. Es una data que viene de un formulario
-app.use(logger("dev")); // Middleware para mostrar en consola las peticiones HTTP que llegan al servidor
-
-// Los middlewares son funciones que se ejecutan antes de que lleguen a las rutas
-// Los middlewares se ejecutan en el orden en el que se declaran
-
-// function miMiddleWare (req, res, next) {
-//   console.log("Middleware in / : ", new Date());
-//   next();
-// }
-
-// app.use(miMiddleWare); // Aplicamos el middleware a todas las rutas
-
-
 // CONFIGURACION DE CORS - Dominios que pueden acceder a esta API
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -36,63 +20,61 @@ app.use((req, res, next) => {
   next();
 });
 
+// MIDDELWARES
+app.use(express.json()); // Middleware para parsear JSON en las peticiones HTTP . Para cuando nos pasan data por body, sino no lo parsea y no lo lee
+app.use(express.urlencoded({ extended: true })); // Middleware para parsear los datos de los formularios en las peticiones HTTP. Es una data que viene de un formulario
+app.use(logger("dev")); // Middleware para mostrar en consola las peticiones HTTP que llegan al servidor
+
+// CONFIGURACION DE HANDLEBARS
+app.engine(
+  "handlebars",
+  handlebars.engine({
+    defaultLayout: "main",
+    partialsDir: path.join(__dirname, "views", "partials"),
+  })
+); // Configuracion de handlebars con partials para reutilizar codigo
+app.set("view engine", "handlebars"); // Configuracion de handlebars como motor de vistas
+app.set("views", path.join(__dirname, "views")); // Configuracion de la carpeta de vistas
+
+// CONFIGURACION DE STATIC
+app.use(express.static(path.join(__dirname, "public")));
+
+// RUTAS DE LA API
+app.use("/api", apiRoutes);
+// app.use("/", vistasRoutes);
+app.get("/", (req, res) => {
+  res.render("index");
+});
+
 // CONFIGURACION STORAGE CON MULTER
-const storageConfig = multer.diskStorage({ // Configuracion de almacenamiento
-  destination: (req, file, cb) => { // Destino de los archivos
+const storageConfig = multer.diskStorage({
+  // Configuracion de almacenamiento
+  destination: (req, file, cb) => {
+    // Destino de los archivos
     cb(null, path.resolve(__dirname, "./uploads")); // Directorio donde se guardan los archivos
   },
-  filename: (req, file, cb) => { // Nombre de los archivos
-    const uploadedFileName = `img-${req.params.id}-${Date.now()}+${file.originalname}`;
+  filename: (req, file, cb) => {
+    // Nombre de los archivos
+    const uploadedFileName = `img-${req.params.id}-${Date.now()}+${
+      file.originalname
+    }`;
     cb(null, uploadedFileName); // Nombre de los archivos guardados.
-  }
+  },
 });
 
 // MIDDLEWARE PARA LA SUBIDA DE ARCHIVOS
 const upload = multer({ storage: storageConfig }); // Configuracion de multer para subir archivos
 
-// CONFIGURACION DE STATIC
-// app.use(express.static(path.join(__dirname, "public"))); // Middleware para servir archivos estaticos
-app.use("/static", express.static(path.join(__dirname, "public"))); // Prueba para MULTER hacia la carpeta public
-// app.use(express.static(path.join(__dirname, "views"))); // MULTER CON VIEWS
-const messages = [];
-
-// Configuración de SOCKET.IO
-io.on("connection", (socket) => {
-  socket.emit("messageList", messages); // Emitimos los mensajes al cliente que se conecta
-  console.log("Nuevo cliente se ha conectado");
-
-  socket.on("new-message", (message) => { // Escuchamos el evento new-message
-    messages.push(message);
-    io.sockets.emit("newMessage", // Emitimos el evento newMessage a todos los clientes conectados
-      socket.id, // Id del socket que envia el mensaje
-      message // Mensaje que envia el socket
-    );
-  });
-});
-
-// CONFIGURACION DE HANDLEBARS
-app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
-app.set("views", path.join(__dirname, "views"));
-
-// RUTA RAIZ
-app.get("/", (req, res) => { // Cuando renderice la raiz del proyecto renderiza el index con el objeto testUser y ejecuta el middleware miMiddleWare
-  let testUser = { name: "Ezequiel", last_name: "Izquierdo" };
-  res.render("index", testUser);
-});
-
 // SUBIDA DE ARCHIVOS
 app.post("/uploads", upload.single("file"), (req, res) => {
   try {
-    req.file ? console.log("Archivo subido correctamente 111", req.file) : console.log("Error al subir el archivo", req.file);
+    req.file
+      ? console.log("Archivo subido correctamente 111", req.file)
+      : console.log("Error al subir el archivo", req.file);
     res.send("Archivo subido correctamente");
   } catch (error) {
     res.send("Error al subir el archivo");
   }
 });
-
-// RUTAS DE LA API
-app.use("/api", apiRoutes);
-app.use("/vistas", vistasRoutes);
 
 module.exports = app;
