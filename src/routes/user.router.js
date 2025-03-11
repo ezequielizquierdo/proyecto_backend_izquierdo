@@ -14,7 +14,13 @@ const saveUsers = (users) => {
   fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
 };
 
-router.get("/user", (req, res) => {
+
+router.get("/", (req, res) => { // /users
+  const users = getUsers();
+  res.json(users);
+});
+
+router.get("/user", (req, res) => { // /user?nombre=ezequiel
   const { nombre } = req.query;
   const users = getUsers();
   const user = users.find(u => u.username === nombre);
@@ -25,7 +31,9 @@ router.get("/user", (req, res) => {
   }
 });
 
-router.post("/register", (req, res) => {
+
+
+router.post("/register", (req, res) => { // /register
   try {
     const { username, firstName, lastName, age, email } = req.body;
     const users = getUsers();

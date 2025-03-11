@@ -6,27 +6,27 @@ const productManager = new ProductManager(
 );
 
 module.exports = {
-  getProducts: async (req, res) => {
+  getProducts: async (req, res) => { // Obtiene todos los productos
     try {
       const products = await productManager.getAll();
-      // res.json(products); // Devuelve un JSON con los productos
+      res.json(products); // Devuelve un JSON con los productos
       console.log("products en getProducts", products);
-      res.render("products", { products });
+      // res.render("products", { products });
     } catch (error) {
       console.log("Error de lectura", error);
       res.status(500).json({ error: "Error al obtener los productos" });
     }
   },
 
-  getProductById: async (req, res) => {
+  getProductById: async (req, res) => { // Obtiene un producto por ID
     const idProduct = parseInt(req.params.id, 10);
     console.log("idProduct", idProduct);
     try {
       const product = await productManager.getById(idProduct);
       console.log("product en getProductById", product);
       if (product) {
-        // res.json(product);
-        res.render("products", { product });
+        res.json(product);
+        // res.render("products", { product });
         // res.render("products", { products });
       } else {
         res.status(404).json({ error: "Producto no encontrado" });
@@ -37,7 +37,7 @@ module.exports = {
     }
   },
 
-  createProduct: async (req, res) => {
+  createProduct: async (req, res) => { // Crea un producto
     try {
       const id = await productManager.save(req.body);
       res.json({
@@ -51,7 +51,7 @@ module.exports = {
     }
   },
 
-  updateProductById: async (req, res) => {
+  updateProductById: async (req, res) => { // Actualiza un producto por ID
     const id = parseInt(req.params.id);
     const product = req.body;
     let timestamp = Date.now();
@@ -68,7 +68,7 @@ module.exports = {
     }
   },
 
-  deleteProductById: async (req, res) => {
+  deleteProductById: async (req, res) => { // Elimina un producto por ID
     const id = parseInt(req.params.id);
     try {
       await productManager.deleteById(id);
@@ -78,4 +78,15 @@ module.exports = {
       res.status(500).json({ error: "Error al eliminar el producto" });
     }
   },
+
+  renderIndex: async (req, res) => { // Renderiza la vista index de handlebars en la ruta raiz
+    try {
+      const products = await productManager.getAll();
+      console.log("renderIndex | products", products);
+      res.render("index", { products });
+    } catch (error) {
+      console.log("Error al renderizar la vista", error);
+      res.status(500).json({ error: "Error al renderizar la vista" });
+    }
+  }
 };

@@ -1,5 +1,23 @@
-<h1 class="chatTitle">Chat por Websocket</h1>
-{{>chat}}
+<h1 class="chatTitle">Listado de productos</h1>
+
+<button id="addProductBtn">Agregar Producto</button>
+
+{{#if products}}
+    <div class="products">
+        <h2>Lista de productos</h2>
+        <ul>
+            {{#each products}}
+                <li>
+                    <p>Nombre: {{this.title}}</p>
+                    <p>Precio: {{this.price}}</p>
+                    <img src="{{this.thumbnail}}" alt="Imagen del producto">
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+{{else}}
+    <p>No hay productos para mostrar</p>
+{{/if}}
 
 {{!-- {{>Chat}} es un partial que se encuentra en 
 proyecto_backend_izquierdo/src/views/partials/chat.handlebars --}}

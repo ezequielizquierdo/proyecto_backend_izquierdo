@@ -1,4 +1,3 @@
-//* CLIENT
 console.log("IN CLIENT");
 
 const userName = document.querySelector(".userName");
@@ -8,13 +7,11 @@ var uuid = "";
 //* Conexión con el servidor de Socket.IO
 const socket = io("http://localhost:3000");
 
-//TODO___ CLIENT ___
-
 //* Lista de mensajes a renderizar en el chat
 var messages = [];
 
 //* Función para actualizar los mensajes en el chat
-const updateMessagges = (newMessages) => {
+const updateMessages = (newMessages) => {
   messages = [...newMessages];
   chatMessage.innerHTML = messages
     .map((message) => {
@@ -33,57 +30,95 @@ const updateMessagges = (newMessages) => {
     .join("");
 };
 
-//* Formulario de entrada de usuario con SweetAlert2
-// Mostrar el formulario de entrada de usuario
-Swal.fire({
-  title: "Ingrese su información",
-  html: `
-        <input type="text" id="swal-input-name" class="swal2-input" placeholder="Nombre">
-        <input type="text" id="swal-input-id" class="swal2-input" placeholder="ID">
-      `,
-  focusConfirm: false,
-  showCancelButton: true,
-  confirmButtonText: "Ingresar",
-  preConfirm: () => {
-    const name = Swal.getPopup().querySelector("#swal-input-name").value;
-    const id = Swal.getPopup().querySelector("#swal-input-id").value;
-    if (!name || !id) {
-      Swal.showValidationMessage(`Por favor ingrese ambos campos`);
+//* Función para mostrar el alert de SweetAlert2
+const showProductAlert = () => {
+  Swal.fire({
+    title: "Ingresá un producto",
+    html: `
+      <input type="text" id="swal-input-title" class="swal2-input" placeholder="Nombre">
+      <input type="text" id="swal-input-description" class="swal2-input" placeholder="Descripción">
+      <input type="text" id="swal-input-price" class="swal2-input" placeholder="Precio">
+      <input type="text" id="swal-input-thumbnail" class="swal2-input" placeholder="URL imágen">
+      <input type="text" id="swal-input-category" class="swal2-input" placeholder="Categoria">
+    `,
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonText: "Ingresar",
+    preConfirm: () => {
+      const title = Swal.getPopup().querySelector("#swal-input-title").value;
+      const description = Swal.getPopup().querySelector("#swal-input-description").value;
+      const price = Swal.getPopup().querySelector("#swal-input-price").value;
+      const thumbnail = Swal.getPopup().querySelector("#swal-input-thumbnail").value;
+      const category = Swal.getPopup().querySelector("#swal-input-category").value;
+      if (!title || !description || !price || !thumbnail || !category) {
+        Swal.showValidationMessage(`Por favor ingrese todos los campos`);
+      }
+      return { title, description, price, thumbnail, category };
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const product = result.value;
+      createProduct(product);
     }
-    return { name: name, id: id };
-  },
-}).then((result) => {
-  console.log("-->", result);
-  const { name, id } = result.value;
-  uuid = id;
-  if (result.isConfirmed) {
-    userName.textContent = name;
-    socket.emit(`userConnect`, { user: name, id });
+  });
+};
+
+//* Función para crear un producto
+const createProduct = (product) => {
+  fetch("/api/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Producto agregado:", data);
+      location.reload(); // Recargar la página para mostrar el nuevo producto
+    })
+    .catch((error) => {
+      console.error("Error al agregar el producto:", error);
+    });
+};
+
+//* Función para manejar los mensajes del usuario
+const handleUserMessage = () => {
+  const btnMessage = document.getElementById("btnMessage");
+  const inputMessage = document.getElementById("inputMessage");
+
+  if (btnMessage && inputMessage) {
+    btnMessage.addEventListener("click", (e) => {
+      e.preventDefault();
+      const message = inputMessage.value;
+      socket.emit("userMessage", { message, user: userName.innerHTML });
+      inputMessage.value = "";
+    });
+
+    inputMessage.addEventListener("keypress", () => {
+      socket.emit("typing", { user: userName.innerHTML });
+    });
+  } else {
+    console.error("btnMessage or inputMessage element not found");
   }
-});
+};
 
-//* Evento de conexión con el servidor
-socket.on("serverUserMessage", (data) => {
-  chatMessage.innerHTML = "";
-  updateMessagges(data);
-});
+//* Inicializar el DOM y los eventos de Socket.IO
+document.addEventListener("DOMContentLoaded", () => {
+  const addProductBtn = document.getElementById("addProductBtn");
 
-//* Enlace de eventos de los botones de la interfaz - al DOM
-const btnMessage = document.getElementById("btnMessage");
-const inputMessage = document.getElementById("inputMessage");
+  if (addProductBtn) {
+    addProductBtn.addEventListener("click", showProductAlert);
+  } else {
+    console.error("addProductBtn element not found");
+  }
 
-//* Función para enviar un mensaje al servidor
-btnMessage.addEventListener("click", (e) => { // Emite el mensaje al servidor
-  e.preventDefault();
-  const message = inputMessage.value;
-  socket.emit("userMessage", { message, user: userName.innerHTML });
-  inputMessage.value = "";
-
+  handleUserMessage();
 });
 
 socket.on("serverUserMessage", (data) => {
   chatMessage.innerHTML = "";
-  updateMessagges(data);
+  updateMessages(data);
 });
 
 const typing = document.querySelector(".typing");
@@ -93,6 +128,5 @@ inputMessage.addEventListener("keypress", () => {
 });
 
 socket.on("typing", (data) => {
-  // console.log("::", data);
-  typing.textContent = `...${data.user} esta escribiendo`
+  typing.textContent = `...${data.user} esta escribiendo`;
 });

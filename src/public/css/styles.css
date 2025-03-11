@@ -1,3 +1,4 @@
+/* 
 body {
   display: flex;
   flex-direction: column;
@@ -7,8 +8,8 @@ body {
   margin: 0;
   font-family: "Roboto", sans-serif;
   background-color: #f0f2f5;
-}
-
+} */
+/* 
 .chatTitle {
   display: flex;
   background-color: #b5d6f9;
@@ -91,4 +92,4 @@ footer button {
 
 footer button:hover {
   background-color: #0056b3;
-}
+} */

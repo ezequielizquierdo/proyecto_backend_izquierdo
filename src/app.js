@@ -1,11 +1,11 @@
 const express = require("express");
-const handlebars = require("express-handlebars");
+// const handlebars = require("express-handlebars");
 const path = require("path");
 const app = express();
 const logger = require("morgan");
 const multer = require("multer");
-const apiRoutes = require("./routes/product.routes");
-const vistasRoutes = require("./routes/vistas.routes");
+const routes = require("./routes");
+// const userRouter = require("./routes/user.router");
 const configureHandlebars = require("./config/handlebars");
 
 // CONFIGURACION DE SERVIDOR HTTP
@@ -27,29 +27,17 @@ app.use(express.urlencoded({ extended: true })); // Middleware para parsear los 
 app.use(logger("dev")); // Middleware para mostrar en consola las peticiones HTTP que llegan al servidor
 
 // CONFIGURACION DE HANDLEBARS
-configureHandlebars(app);
-// app.engine(
-//   "handlebars",
-//   handlebars.engine({
-//     defaultLayout: "main",
-//     partialsDir: path.join(__dirname, "views", "partials"),
-//   })
-// ); // Configuracion de handlebars con partials para reutilizar codigo
-// app.set("view engine", "handlebars"); // Configuracion de handlebars como motor de vistas
-// app.set("views", path.join(__dirname, "views")); // Configuracion de la carpeta de vistas
-
-
-
+configureHandlebars(app); // Configuracion de handlebars con partials para reutilizar codigo y configuracion de la carpeta de vistas
 
 // CONFIGURACION DE STATIC
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public"))); // Configuracion de la carpeta public como estatica para acceder a los archivos
 
 // RUTAS DE LA API
-app.use("/api", apiRoutes);
-// app.use("/", vistasRoutes);
-app.get("/", (req, res) => {
-  res.render("index");
-});
+app.use("/api", routes);
+// app.use("/", userRouter);
+// app.get("/", (req, res) => { // En la ruta raiz, renderiza el index de la vista
+//   res.render("index"); // Renderiza la vista index de handlebars en la ruta raiz
+// });
 
 // CONFIGURACION STORAGE CON MULTER
 const storageConfig = multer.diskStorage({

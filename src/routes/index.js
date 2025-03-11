@@ -1,21 +1,16 @@
 const express = require("express");
 const router = express.Router();
+const productController = require("../controllers/product.controller");
 
-const products = require("./product.routes");
-const carts = require("./cart.routes");
-const user = require("./vistas.routes");
+const productsRouter = require("./product.router");
+const cartsRouter = require("./cart.router");
+const userRouter = require("./user.router");
 
-router.get("/", function (req, res, next) { // Ruta raiz de /api que muestra un mensaje de bienvenida
-  res.send(
-    `<div style='text-align: center; margin-top: 20%; font-size: 2em; font-family: Arial;'>
-    <h1>¡Bienvenido a la API de Productos deportivos !</h1>
-    <p>Para ver todos los productos disponibles, ve a <a href="http://localhost:8080/api/products">/products</a></p>
-    </div>`
-  );
-});
+router.get("/render", productController.renderIndex); // Ruta para renderizar la vista con productos
 
-router.use("/products", products); // Rutas de productos
-router.use("/carts", carts); // Rutas de carritos
-router.use("/vistas", user); // Rutas de vistas
+router.use("/products", productsRouter); // Rutas de productos
+router.use("/users", userRouter); // Rutas de productos
+router.use("/carts", cartsRouter); // Rutas de carritos
+router.use("/vistas", userRouter); // Rutas de vistas
 
 module.exports = router;

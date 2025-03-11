@@ -68,5 +68,41 @@
       "/images/baloncesto/balon1.png",
       "/images/baloncesto/balon2.png"
     ]
+  },
+  {
+    "id": 6,
+    "title": "Pelota de rugby",
+    "description": "Pelota de rugby profesional tamaño 5",
+    "code": "RG006",
+    "price": 39.99,
+    "status": true,
+    "stock": 80,
+    "category": "Rugby",
+    "thumbnails": [
+      "/images/rugby/pelota1.png",
+      "/images/rugby/pelota2.png"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Raqueta de pádel",
+    "description": "Raqueta de pádel de alta calidad",
+    "code": "PD007",
+    "price": 99.99,
+    "status": true,
+    "stock": 40,
+    "category": "Pádel",
+    "thumbnails": [
+      "/images/padel/raqueta1.png",
+      "/images/padel/raqueta2.png"
+    ]
+  },
+  {
+    "title": "Bola",
+    "description": "Bola chica",
+    "price": "123",
+    "thumbnail": "NA",
+    "category": "Bolas",
+    "id": 8
   }
 ]
