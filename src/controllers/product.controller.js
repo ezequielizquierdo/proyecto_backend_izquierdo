@@ -5,7 +5,7 @@ const productManager = new ProductManager(
   path.join(__dirname, "../db/products.json")
 );
 
-module.exports = {
+module.exports = (io) => ({
   getProducts: async (req, res) => { // Obtiene todos los productos
     try {
       const products = await productManager.getAll();
@@ -40,11 +40,12 @@ module.exports = {
   createProduct: async (req, res) => { // Crea un producto
     try {
       const id = await productManager.save(req.body);
+      const newProduct = { id, ...req.body };
       res.json({
-        id,
-        ...req.body,
+        ...newProduct,
         message: `El producto se agregó correctamente con ID: ${id}`,
       });
+      io.emit("productAdded", newProduct); // Emitir evento de Socket.IO
     } catch (error) {
       console.log("Error de escritura", error);
       res.status(500).json({ error: "Error al agregar el producto" });
@@ -89,4 +90,4 @@ module.exports = {
       res.status(500).json({ error: "Error al renderizar la vista" });
     }
   }
-};
+});

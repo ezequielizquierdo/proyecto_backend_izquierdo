@@ -8,10 +8,7 @@
     "status": true,
     "stock": 100,
     "category": "Fútbol",
-    "thumbnails": [
-      "/images/futbol/pelota1.png",
-      "/images/futbol/pelota2.png"
-    ]
+    "thumbnail": "https://static8.depositphotos.com/1000459/1036/i/950/depositphotos_10366104-stock-photo-soccer-ball.jpg"
   },
   {
     "id": 2,
@@ -22,10 +19,7 @@
     "status": true,
     "stock": 50,
     "category": "Tenis",
-    "thumbnails": [
-      "/images/tenis/raqueta1.png",
-      "/images/tenis/raqueta2.png"
-    ]
+    "thumbnail": "https://www.wilsonstore.com.ar/cdn/shop/files/WR074511U_0_1200x.jpg"
   },
   {
     "id": 3,
@@ -36,10 +30,7 @@
     "status": true,
     "stock": 75,
     "category": "Boxeo",
-    "thumbnails": [
-      "/images/boxeo/guantes1.png",
-      "/images/boxeo/guantes2.png"
-    ]
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3JWPwuh0tbt3D9W4N3xAwmeAbGw9HTQdHRhId2G2POX9a7FxJUi9lLIG89MJxmLfuq3Y&usqp=CAU"
   },
   {
     "id": 4,
@@ -50,10 +41,7 @@
     "status": true,
     "stock": 20,
     "category": "Ciclismo",
-    "thumbnails": [
-      "/images/ciclismo/bicicleta1.png",
-      "/images/ciclismo/bicicleta2.png"
-    ]
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0XX8wSOf8PIp45a1_eBcRJz2zlLlTCyab91q56urBgtsQ-OaK7tyGqwzpak5VWt73KaM&usqp=CAU"
   },
   {
     "id": 5,
@@ -64,10 +52,7 @@
     "status": true,
     "stock": 60,
     "category": "Baloncesto",
-    "thumbnails": [
-      "/images/baloncesto/balon1.png",
-      "/images/baloncesto/balon2.png"
-    ]
+    "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Basketball.png"
   },
   {
     "id": 6,
@@ -78,10 +63,7 @@
     "status": true,
     "stock": 80,
     "category": "Rugby",
-    "thumbnails": [
-      "/images/rugby/pelota1.png",
-      "/images/rugby/pelota2.png"
-    ]
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLiq8Uh1f-Wio0qxzuNj9yHlC6H57XwGgX0Qk2so-nXGulOBkFssi5BO7k86p15dCEY94&usqp=CAU"
   },
   {
     "id": 7,
@@ -92,17 +74,22 @@
     "status": true,
     "stock": 40,
     "category": "Pádel",
-    "thumbnails": [
-      "/images/padel/raqueta1.png",
-      "/images/padel/raqueta2.png"
-    ]
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvqSpuuq7iWR2VgpT67K2XxI4HwL3H5PfitOmuG1bPrjqGF_pLeJeRMXsVUwP7TFlcyuc&usqp=CAU"
   },
   {
-    "title": "Bola",
-    "description": "Bola chica",
-    "price": "123",
-    "thumbnail": "NA",
-    "category": "Bolas",
+    "title": "Guantes de arquero",
+    "description": "Guantes de arquero de futbol profesional",
+    "price": "100,50",
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-P0HlxMY8LFlcasiHwnUAVaWypA3MSByvzg&s",
+    "category": "Futbol",
     "id": 8
+  },
+  {
+    "title": "Botines de golf",
+    "description": "Botines para jugar al golf en canchas de pasto",
+    "price": "3000",
+    "thumbnail": "https://www.digitalsport.com.ar/files/products/5a1daafac5955-336870-500x500.jpg",
+    "category": "Botines",
+    "id": 9
   }
 ]

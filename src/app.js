@@ -33,11 +33,7 @@ configureHandlebars(app); // Configuracion de handlebars con partials para reuti
 app.use(express.static(path.join(__dirname, "public"))); // Configuracion de la carpeta public como estatica para acceder a los archivos
 
 // RUTAS DE LA API
-app.use("/api", routes);
-// app.use("/", userRouter);
-// app.get("/", (req, res) => { // En la ruta raiz, renderiza el index de la vista
-//   res.render("index"); // Renderiza la vista index de handlebars en la ruta raiz
-// });
+app.use("/api", routes(io)); // Pasar io a las rutas
 
 // CONFIGURACION STORAGE CON MULTER
 const storageConfig = multer.diskStorage({

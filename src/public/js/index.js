@@ -75,10 +75,25 @@ const createProduct = (product) => {
     .then((response) => response.json())
     .then((data) => {
       console.log("Producto agregado:", data);
-      location.reload(); // Recargar la página para mostrar el nuevo producto
+      // No es necesario recargar la página
     })
     .catch((error) => {
       console.error("Error al agregar el producto:", error);
+    });
+};
+
+//* Función para eliminar un producto
+const deleteProduct = (productId) => {
+  fetch(`/api/products/${productId}`, {
+    method: "DELETE",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Producto eliminado:", data);
+      location.reload(); // Recargar la página para actualizar la lista de productos
+    })
+    .catch((error) => {
+      console.error("Error al eliminar el producto:", error);
     });
 };
 
@@ -114,6 +129,36 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   handleUserMessage();
+
+  // Agregar evento de eliminación a los botones
+  const deleteProductBtns = document.querySelectorAll(".deleteProductBtn");
+  deleteProductBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const productId = e.target.getAttribute("data-id");
+      deleteProduct(productId);
+    });
+  });
+});
+
+// Escuchar el evento productAdded y actualizar la lista de productos
+socket.on("productAdded", (product) => {
+  const productsContainer = document.querySelector(".products");
+  const productCard = document.createElement("div");
+  productCard.classList.add("product-card");
+  productCard.innerHTML = `
+    <img src="${product.thumbnail}" alt="Imagen del producto" onerror="this.onerror=null; this.src='/img/default.png';">
+    <p class="product-title">${product.title}</p>
+    <p class="product-description">${product.description}</p>
+    <p class="product-price">${product.price}</p>
+    <button class="deleteProductBtn" data-id="${product.id}">Eliminar</button>
+  `;
+  productsContainer.appendChild(productCard);
+
+  // Agregar evento de eliminación al nuevo botón
+  productCard.querySelector(".deleteProductBtn").addEventListener("click", (e) => {
+    const productId = e.target.getAttribute("data-id");
+    deleteProduct(productId);
+  });
 });
 
 socket.on("serverUserMessage", (data) => {
