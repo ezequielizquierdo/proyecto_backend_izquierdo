@@ -7,8 +7,12 @@ module.exports = (app) => {
     handlebars.engine({
       defaultLayout: "main",
       partialsDir: path.join(__dirname, "../views", "partials"),
+      runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+      },
     })
-  ); // Configuracion de handlebars con partials para reutilizar codigo
-  app.set("view engine", "handlebars"); // Configuracion de handlebars como motor de vistas
-  app.set("views", path.join(__dirname, "../views")); // Configuracion de la carpeta de vistas
+  );
+  app.set("view engine", "handlebars");
+  app.set("views", path.join(__dirname, "../views"));
 };

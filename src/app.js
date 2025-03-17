@@ -1,11 +1,15 @@
 const express = require("express");
-// const handlebars = require("express-handlebars");
+require("dotenv").config();
+
+//MONGOOSE
+const mongoose = require("mongoose");
+const MONGO_URI = process.env.MONGO_URI;
+
 const path = require("path");
 const app = express();
 const logger = require("morgan");
 const multer = require("multer");
 const routes = require("./routes");
-// const userRouter = require("./routes/user.router");
 const configureHandlebars = require("./config/handlebars");
 
 // CONFIGURACION DE SERVIDOR HTTP
@@ -26,6 +30,16 @@ app.use(express.json()); // Middleware para parsear JSON en las peticiones HTTP 
 app.use(express.urlencoded({ extended: true })); // Middleware para parsear los datos de los formularios en las peticiones HTTP. Es una data que viene de un formulario
 app.use(logger("dev")); // Middleware para mostrar en consola las peticiones HTTP que llegan al servidor
 
+// CONEXION A LA BASE DE DATOS
+mongoose
+  .connect(MONGO_URI)
+  .then(() => 
+    console.log("Conexión a la base de datos Mongo Atlas exitosa")
+)
+  .catch((err) =>
+    console.log("Error al conectar a la base de datos Mongo Atlas", err)
+  );
+
 // CONFIGURACION DE HANDLEBARS
 configureHandlebars(app); // Configuracion de handlebars con partials para reutilizar codigo y configuracion de la carpeta de vistas
 
@@ -33,7 +47,7 @@ configureHandlebars(app); // Configuracion de handlebars con partials para reuti
 app.use(express.static(path.join(__dirname, "public"))); // Configuracion de la carpeta public como estatica para acceder a los archivos
 
 // RUTAS DE LA API
-app.use("/api", routes(io)); // Pasar io a las rutas
+app.use("/api", routes(io));
 
 // CONFIGURACION STORAGE CON MULTER
 const storageConfig = multer.diskStorage({

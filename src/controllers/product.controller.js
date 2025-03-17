@@ -1,86 +1,107 @@
 const ProductManager = require("../managers/productManager");
 const path = require("path");
 
-const productManager = new ProductManager(
-  path.join(__dirname, "../db/products.json")
-);
+const productManager = new ProductManager();
 
 module.exports = (io) => ({
-  getProducts: async (req, res) => { // Obtiene todos los productos
+
+  getProducts: async (req, res) => {
     try {
       const products = await productManager.getAll();
-      res.json(products); // Devuelve un JSON con los productos
-      console.log("products en getProducts", products);
-      // res.render("products", { products });
+      res.status(200).json({ success: true, products });
     } catch (error) {
       console.log("Error de lectura", error);
       res.status(500).json({ error: "Error al obtener los productos" });
     }
   },
 
-  getProductById: async (req, res) => { // Obtiene un producto por ID
-    const idProduct = parseInt(req.params.id, 10);
-    console.log("idProduct", idProduct);
+  getProductById: async (req, res) => {
+    const { id } = req.params;
     try {
-      const product = await productManager.getById(idProduct);
-      console.log("product en getProductById", product);
-      if (product) {
-        res.json(product);
-        // res.render("products", { product });
-        // res.render("products", { products });
-      } else {
-        res.status(404).json({ error: "Producto no encontrado" });
+      const product = await productManager.getById(id);
+      if (!product) {
+        return res.status(404).json({ error: "Producto no encontrado" });
       }
+      res.status(200).json({ success: true, product });
     } catch (error) {
       console.log("Error de lectura del id", error);
       res.status(500).json({ error: "Error al obtener el producto" });
     }
   },
 
-  createProduct: async (req, res) => { // Crea un producto
+  createProduct: async (req, res) => {
     try {
-      const id = await productManager.save(req.body);
-      const newProduct = { id, ...req.body };
-      res.json({
-        ...newProduct,
-        message: `El producto se agregó correctamente con ID: ${id}`,
-      });
-      io.emit("productAdded", newProduct); // Emitir evento de Socket.IO
+      const data = req.body;
+      const { title, description, category, price, status, stock, thumbnail } =
+        data;
+
+      if (
+        !title ||
+        !description ||
+        !category ||
+        !price ||
+        !status ||
+        !stock ||
+        !thumbnail
+      ) {
+        return res.status(400).json({ error: "Faltan datos" });
+      }
+
+      const product = await productManager.save(data);
+      if (!product) {
+        return res.status(400).json({ error: "Error al guardar el producto" });
+      }
+      res.status(200).json({ success: true, product });
     } catch (error) {
       console.log("Error de escritura", error);
       res.status(500).json({ error: "Error al agregar el producto" });
     }
   },
 
-  updateProductById: async (req, res) => { // Actualiza un producto por ID
-    const id = parseInt(req.params.id);
-    const product = req.body;
-    let timestamp = Date.now();
+  updateProductById: async (req, res) => {
     try {
-      const updatedProduct = await productManager.updateById(id, product);
-      res.json({
-        ...updatedProduct,
-        timestamp,
-        message: `El producto ID: ${id} se actualizó con éxito`,
-      });
+      const { id } = req.params;
+      const data = req.body;
+      if (!id) {
+        return res.status(400).json({ error: "No se recibió el ID" });
+      }
+      if (!data) {
+        return res.status(400).json({ error: "No se recibieron datos" });
+      }
+      const product = await productManager.updateById(id, data);
+      if (!product) {
+        return res.status(400).json({ error: "Error al actualizar el producto" });
+      }
+      console.log("product", product);
+      console.log("id", id);
+      console.log("data", data);
+    
+      res.status(200).json({ success: true, product });
     } catch (error) {
       console.log("Error de actualización", error);
       res.status(500).json({ error: "Error al actualizar el producto" });
     }
   },
 
-  deleteProductById: async (req, res) => { // Elimina un producto por ID
-    const id = parseInt(req.params.id);
+  deleteProductById: async (req, res) => {
     try {
-      await productManager.deleteById(id);
-      res.json({ message: `El producto ID: ${id} se eliminó con éxito` });
+      const { id } = req.params;
+      if (!id) {
+        return res.status(400).json({ error: "No se recibió el ID" });
+      }
+      const product = await productManager.deleteById(id);
+      if (!product) {
+        return res.status(400).json({ error: "Error al eliminar el producto" });
+      }
+      res.status(200).json({ success: true, product });
     } catch (error) {
       console.log("Error de eliminación", error);
       res.status(500).json({ error: "Error al eliminar el producto" });
     }
   },
 
-  renderIndex: async (req, res) => { // Renderiza la vista index de handlebars en la ruta raiz
+
+  renderIndex: async (req, res) => {
     try {
       const products = await productManager.getAll();
       console.log("renderIndex | products", products);
@@ -89,5 +110,5 @@ module.exports = (io) => ({
       console.log("Error al renderizar la vista", error);
       res.status(500).json({ error: "Error al renderizar la vista" });
     }
-  }
+  },
 });

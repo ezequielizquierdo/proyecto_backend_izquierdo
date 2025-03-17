@@ -75,7 +75,6 @@ const createProduct = (product) => {
     .then((response) => response.json())
     .then((data) => {
       console.log("Producto agregado:", data);
-      // No es necesario recargar la página
     })
     .catch((error) => {
       console.error("Error al agregar el producto:", error);
@@ -90,7 +89,7 @@ const deleteProduct = (productId) => {
     .then((response) => response.json())
     .then((data) => {
       console.log("Producto eliminado:", data);
-      location.reload(); // Recargar la página para actualizar la lista de productos
+      location.reload();
     })
     .catch((error) => {
       console.error("Error al eliminar el producto:", error);
