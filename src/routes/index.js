@@ -8,12 +8,12 @@ const userRouter = require("./user.router");
 module.exports = (io) => {
   const productController = require("../controllers/product.controller")(io);
 
-  router.get("/render", productController.renderIndex); // Ruta para renderizar la vista con productos
+  router.get("/render", productController.renderIndex);
 
-  router.use("/products", productsRouter(io)); // Rutas de productos
-  router.use("/users", userRouter); // Rutas de productos
-  router.use("/carts", cartsRouter); // Rutas de carritos
-  router.use("/vistas", userRouter); // Rutas de vistas
+  router.use("/products", productsRouter(io));
+  router.use("/users", userRouter);
+  router.use("/carts", cartsRouter);
+  router.use("/vistas", userRouter);
 
   return router;
 };

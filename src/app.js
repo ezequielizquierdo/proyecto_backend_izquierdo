@@ -68,16 +68,5 @@ const storageConfig = multer.diskStorage({
 // MIDDLEWARE PARA LA SUBIDA DE ARCHIVOS
 const upload = multer({ storage: storageConfig }); // Configuracion de multer para subir archivos
 
-// SUBIDA DE ARCHIVOS
-app.post("/uploads", upload.single("file"), (req, res) => {
-  try {
-    req.file
-      ? console.log("Archivo subido correctamente 111", req.file)
-      : console.log("Error al subir el archivo", req.file);
-    res.send("Archivo subido correctamente");
-  } catch (error) {
-    res.send("Error al subir el archivo");
-  }
-});
 
 module.exports = app;

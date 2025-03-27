@@ -25,7 +25,7 @@ class ProductManager {
       );
       return products;
     } catch (error) {
-      console.log("Error al obtener los productos", error);
+      console.error("Error al obtener los productos", error);
     }
   }
 
@@ -37,7 +37,7 @@ class ProductManager {
       const product = await Products.findById(id);
       return product;
     } catch (error) {
-      console.log("Error al obtener el producto", error);
+      console.error("Error al obtener el producto", error);
     }
   }
 
@@ -48,7 +48,7 @@ class ProductManager {
       await newProduct.save();
       return newProduct;
     } catch (error) {
-      console.log("Error al guardar el producto", error);
+      console.error("Error al guardar el producto", error);
     }
   }
 
@@ -61,7 +61,7 @@ class ProductManager {
       const updated = await Products.findByIdAndUpdate(id, data, { new: true }); // new: true devuelve el producto actualizado
       return updated;
     } catch (error) {
-      console.log("Error al actualizar el producto", error);
+      console.error("Error al actualizar el producto", error);
     }
   }
 
@@ -72,7 +72,7 @@ class ProductManager {
       const deleteProduct = await Products.findByIdAndDelete(id);
       return deleteProduct;
     } catch (error) {
-      console.log("Error al eliminar el producto", error);
+      console.error("Error al eliminar el producto", error);
     }
   }
 }

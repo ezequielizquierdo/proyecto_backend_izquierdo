@@ -1,34 +1,99 @@
-<!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Listado de productos</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-    <h1 class="chatTitle">Listado de productos</h1>
-
-    <div class="container">
-        <button id="addProductBtn" class="add-product-btn">Agregar Producto</button>
-
-        {{#if products}}
-            <div class="products">
-                {{#each products}}
-                    <div class="product-card">
-                        <img src="{{this.thumbnail}}" alt="Imagen del producto" onerror="this.onerror=null; this.src='/img/default.png';">
-                        <p class="product-title">{{this.title}}</p>
-                        <p class="product-description">{{this.description}}</p>
-                        <p class="product-price">{{this.price}}</p>
-                        <button class="deleteProductBtn" data-id="{{this.id}}">Eliminar</button>
-                    </div>
-                {{/each}}
-            </div>
-        {{else}}
-            <p>No hay productos para mostrar</p>
-        {{/if}}
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="header">
+      <div>
+        <h1 class="chatTitle">Listado de productos</h1>
+      </div>
+      <div class="addPrdBtn-box">
+        <button id="addProductBtn" class="add-product-btn">Agregar Nuevo
+          Producto al listado</button>
+      </div>
     </div>
 
-    <script src="/js/main.js"></script>
-</body>
+    <div class="body_container">
+
+      <div class="button-container">
+        <div class="cartBtn-box">
+          <button
+            id="cartBtn"
+            class="cart-btn"
+            style="display: none;"
+          >Carrito</button>
+        </div>
+        <div class="deleteCartBtn-box">
+          <button
+            id="deleteCartBtn"
+            class="delete-cart-btn"
+            style="display: none;"
+          >Eliminar carrito completo</button>
+        </div>
+      </div>
+
+      <div class="createCartBtn-box">
+        <button id="createCartBtn" class="create-cart-btn">Crear nuevo carrito</button>
+      </div>
+
+      <div class="filters">
+        <form id="filterForm">
+          <label for="limit">Límite:</label>
+          <input type="number" id="limit" name="limit" min="1" value="10" />
+
+ <label for="query">Categoría:</label>
+<select id="query" name="query">
+  <option value="">Todas las categorías</option>
+</select>
+
+          <label for="sort">Ordenar por precio:</label>
+          <select id="sort" name="sort">
+            <option value="">Sin orden</option>
+            <option value="asc">Ascendente</option>
+            <option value="desc">Descendente</option>
+          </select>
+
+          <button type="submit">Aplicar filtros</button>
+        </form>
+      </div>
+
+      <div class="container">
+
+        {{#if products}}
+          <div class="products">
+            {{#each products}}
+              <div class="product-card">
+                <img
+                  src="{{this.thumbnail}}"
+                  alt="Imagen del producto"
+                  onerror="this.onerror=null; this.src='/img/default.png';"
+                />
+                <p class="product-title">{{this.title}}</p>
+                <p
+                  class="product-category"
+                  style="font-size: 0.9em; color: gray; margin: 0;"
+                >Categoría: {{this.category}}</p>
+                <p class="product-description">{{this.description}}</p>
+                <p class="product-price">{{this.price}}</p>
+                <button class="addToCartBtn" data-id="{{this._id}}">Agregar al
+                  carrito</button>
+                <button class="deleteProductBtn" data-id="{{this._id}}">Eliminar
+                  producto de la lista</button>
+              </div>
+            {{/each}}
+          </div>
+          <div
+            class="pagination"
+            style="text-align: center; margin-top: 20px;"
+          ></div>
+        {{else}}
+          <p>No hay productos para mostrar</p>
+        {{/if}}
+      </div>
+
+    </div>
+  </body>
 </html>
